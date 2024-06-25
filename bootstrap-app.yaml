@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap-student-15
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: student-15
+  project: default
+  source:
+    repoURL: https://github.com/szilardszell/argocd-katas-training
+    targetRevision: HEAD
+    path: apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
