@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: szilard-jenkins
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://charts.bitnami.com/bitnami'
+      targetRevision: 13.4.6
+      helm:
+        valueFiles:
+          - $values/jenkins/values.yaml
+      chart: jenkins
+    - repoURL: 'https://github.com/szilardszell/argocd-katas-training'
+      targetRevision: main
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: student-15
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
